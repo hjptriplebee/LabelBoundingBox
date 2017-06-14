@@ -3,9 +3,10 @@ from PIL import Image, ImageTk
 import tkinter.ttk as ttk
 import os
 import glob
+import random
 
 # colors for the bounding boxes
-COLORS = ['red', 'blue', 'olive', 'teal', 'cyan', 'green', 'black']
+COLORS = {}
 
 # noinspection PyUnusedLocal
 class LabelTool:
@@ -72,7 +73,9 @@ class LabelTool:
         if os.path.exists(self.classCandidateFileName):
             with open(self.classCandidateFileName) as cf:
                 for line in cf.readlines():
-                    self.cla_can_temp.append(line.strip('\n'))
+                    tmp = line.strip('\n')
+                    self.cla_can_temp.append(tmp)
+                    COLORS[tmp] = '#%02x%02x%02x' % (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
         self.classCandidate['values'] = self.cla_can_temp
         self.classCandidate.current(0)
@@ -162,11 +165,11 @@ class LabelTool:
                     tmp = [t for t in tmp2[1:]]
                     self.bboxList.append(tuple(tmp))
                     tmpId = self.mainPanel.create_rectangle(int(tmp[1]), int(tmp[2]), int(tmp[3]), int(tmp[4]), width = 2,
-                                                            outline = COLORS[(len(self.bboxList)-1) % len(COLORS)])
+                                                            outline = COLORS[tmp[0]])
                     self.bboxIdList.append(tmpId)
                     self.listbox.insert(END, '%s : (%d, %d) -> (%d, %d)' %(tmp[0],int(tmp[1]), int(tmp[2]),
                                                                            int(tmp[3]), int(tmp[4])))
-                    self.listbox.itemconfig(len(self.bboxIdList) - 1, fg = COLORS[(len(self.bboxIdList) - 1) % len(COLORS)])
+                    self.listbox.itemconfig(len(self.bboxIdList) - 1, fg = COLORS[tmp[0]])
 
     def saveImage(self):
         with open(self.labelFileName, 'w') as f:
@@ -186,7 +189,7 @@ class LabelTool:
             self.bboxIdList.append(self.bboxId)
             self.bboxId = None
             self.listbox.insert(END, '%s : (%d, %d) -> (%d, %d)' %(self.currentLabelClass,x1, y1, x2, y2))
-            self.listbox.itemconfig(len(self.bboxIdList) - 1, fg = COLORS[(len(self.bboxIdList) - 1) % len(COLORS)])
+            self.listbox.itemconfig(len(self.bboxIdList) - 1, fg = COLORS[self.currentLabelClass])
         self.STATE['click'] = 1 - self.STATE['click']
 
     def mouseMove(self, event):
@@ -202,7 +205,7 @@ class LabelTool:
             if self.bboxId:
                 self.mainPanel.delete(self.bboxId)
             self.bboxId = self.mainPanel.create_rectangle(self.STATE['x'], self.STATE['y'], event.x, event.y,
-                                                          width = 2, outline = COLORS[len(self.bboxList) % len(COLORS)])
+                                                          width = 2, outline = COLORS[self.currentLabelClass])
 
     def cancelBBox(self, event):
         if 1 == self.STATE['click']:
