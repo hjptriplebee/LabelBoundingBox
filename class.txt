@@ -1,0 +1,6 @@
+car
+bus
+miniVan
+mediumVan
+largeVan
+trailer
