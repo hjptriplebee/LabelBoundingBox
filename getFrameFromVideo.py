@@ -15,7 +15,7 @@ def getVideoName(path, nameList):
         filePath = os.path.join(path, file)
         if os.path.isdir(filePath):          #is a dir
             continue
-            #getVideoName(filePath, nameList)
+            #getVideoName(filePath, nameList)  #rescursive search
         elif re.match(pattern, file) != None:          #is a video in mp4 format
             nameList.append(filePath)
     return nameList
