@@ -16,15 +16,15 @@ A tool for labeling bounding boxes of training images. It is based on BBox-Label
 - Input "Image Dir" which is the name of your folder under "Images"
 - click "load" and you can label images now!
 - To create a new bounding box, left-click to select the first vertex. Moving the mouse to draw a rectangle, and left-click again to select the second vertex.
-- To cancel the bounding box while drawing, just press "<ESC>"
+- To cancel the bounding box while drawing, just press "&lt;ESC&gt;"
 - To delete a existing bounding box, select it from the listbox, and click 'Delete'.
 - To delete all existing bounding boxes in the image, simply click 'ClearAll'.
-- After finishing one image, click 'Next' to advance. Likewise, click 'Prev' to reverse. You can press "<Left>" and "<Right>" Or input the index and click 'Go' to navigate to an arbitrary image instead.** The labeling result will be saved if and only if the 'Next' button is clicked.**
+- After finishing one image, click 'Next' to advance. Likewise, click 'Prev' to reverse. You can press "&lt;Left&gt;" and "&lt;Right&gt;" Or input the index and click 'Go' to navigate to an arbitrary image instead. ***The labeling result will be saved if and only if the 'Next' button is clicked.***
 - label files are stored in "Labels" folder
 
 ## for multi-class labeling:
 - Write down your classes in "class.txt"
-- Start label-tool and select class at the top-right corner.***remember to click "ConfirmClass"***
+- Start label-tool and select class at the top-right corner. ***remember to click "ConfirmClass"***
 - After clicking "ConfirmClass", you can label different classes with different colors.
 
 ## for get Frame from Video:
