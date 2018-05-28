@@ -2,12 +2,13 @@ import cv2
 import os
 import re
 import numpy as np
+from tkinter.filedialog import askdirectory
 
-pattern = re.compile(r'\S*\.(mp4|MP4)')
-skipFrameNum = 300
+pattern = re.compile(r'\S*\.(mp4|MP4|avi)')
+skipFrameNum = 1
 frameCnt = 0
-segXNum = 3
-segYNum = 3
+segXNum = 1
+segYNum = 1
 
 def getVideoName(path, nameList):
     fileList = os.listdir(path)
@@ -20,7 +21,7 @@ def getVideoName(path, nameList):
             nameList.append(filePath)
     return nameList
 
-def videoToFrame(videoName):
+def videoToFrame(videoName, out_folder):
     print(videoName)
     cap = cv2.VideoCapture(videoName)
     flag, frame = cap.read()
@@ -33,9 +34,7 @@ def videoToFrame(videoName):
             for j in range(segYNum):
                 frame2 = frame[j * height // segYNum : (j + 1) * height // segYNum,
                                i * width // segXNum : (i + 1) * width // segXNum] #get ROI
-                #第二种写法不支持中文路径
-                cv2.imencode('.jpg', frame2)[1].tofile("E:\\traffic\\苏交科视频\\无人机\\image\\" + '{:0>6}'.format(str(frameCnt + 1)) + '.jpg')
-                #cv2.imwrite("E:\\traffic\\苏交科视频\\无人机\\image\\" + '{:0>6}'.format(str(frameCnt // skipFrameNum + 1)) + '.jpg', frame)
+                cv2.imencode('.jpg', frame2)[1].tofile(out_folder + "/" + '{:0>6}'.format(str(frameCnt + 1)) + '.jpg')
                 frameCnt += 1
         skipCnt += 1
         cap.set(1, skipCnt * skipFrameNum)
@@ -43,7 +42,9 @@ def videoToFrame(videoName):
     return
 
 if __name__ == "__main__":
-    videoNameList = getVideoName("E:\\traffic\\苏交科视频\\无人机",[])
+    in_folder = askdirectory(title="Select folder with video files")
+    videoNameList = getVideoName(in_folder,[])
+    out_folder = askdirectory(title="Select output folder")
     print("video Num: %d" %len(videoNameList))
     for video in videoNameList:
         videoToFrame(video)
